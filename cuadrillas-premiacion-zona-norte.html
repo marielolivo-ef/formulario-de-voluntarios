@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuadrillas de Premiación · Zona Norte · Santo Domingo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#1B2440;        /* azul protocolo */
+  --tinta-2:#2A365C;
+  --oro:#C9A227;          /* oro medalla */
+  --oro-suave:#F1E4BC;
+  --papel:#F7F5F0;
+  --blanco:#FFFFFF;
+  --gris:#8B8FA3;
+  --linea:#E3E0D8;
+  --coral:#E4572E;
+  --verde:#4C7A34;
+  --teal:#0E7C7B;
+  --azul:#2E5EAA;
+  --morado:#6B4E9B;
+  --display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --cuerpo:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--cuerpo);background:var(--papel);color:var(--tinta);font-size:14px;line-height:1.5}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:13px;padding:7px 9px;border:1px solid var(--linea);border-radius:6px;background:var(--blanco);color:var(--tinta);width:100%}
+input:focus,select:focus{outline:2px solid var(--oro);outline-offset:1px}
+label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);display:block;margin-bottom:4px}
+
+/* ======= CABECERA ======= */
+header{background:var(--tinta);color:var(--blanco);padding:22px 20px 0}
+.head-top{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 18px}
+.head-top h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,4vw,40px);letter-spacing:.02em;text-transform:uppercase}
+.head-top h1 span{color:var(--oro)}
+.head-sub{font-size:12px;color:#B9BFD4;letter-spacing:.04em}
+/* Tira de calendario — elemento firma */
+.tira{max-width:1100px;margin:16px auto 0;display:grid;grid-template-columns:repeat(16,1fr);gap:3px;padding-bottom:14px}
+.tira .dia{background:var(--tinta-2);border-radius:6px 6px 0 0;padding:6px 2px 5px;text-align:center;cursor:pointer;border:1px solid transparent;transition:background .15s}
+.tira .dia:hover{background:#38466F}
+.tira .dia.activo{background:var(--oro);color:var(--tinta)}
+.tira .dia .num{font-family:var(--display);font-weight:700;font-size:17px;display:block;line-height:1}
+.tira .dia .mes{font-size:8.5px;text-transform:uppercase;letter-spacing:.08em;opacity:.75}
+.tira .puntos{display:flex;justify-content:center;gap:2px;margin-top:4px;min-height:6px;flex-wrap:wrap}
+.tira .pt{width:6px;height:6px;border-radius:50%}
+
+/* ======= PESTAÑAS ======= */
+nav{background:var(--blanco);border-bottom:1px solid var(--linea);position:sticky;top:0;z-index:20}
+.tabs{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto}
+.tab{background:none;border:none;border-bottom:3px solid transparent;padding:13px 18px;font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);white-space:nowrap}
+.tab.activo{color:var(--tinta);border-bottom-color:var(--oro)}
+main{max-width:1100px;margin:0 auto;padding:22px 20px 60px}
+.panel{display:none}
+.panel.activo{display:block}
+
+/* ======= COMPONENTES ======= */
+.tarjeta{background:var(--blanco);border:1px solid var(--linea);border-radius:10px;padding:18px;margin-bottom:16px}
+.tarjeta h2{font-family:var(--display);font-size:20px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.tarjeta h2::before{content:"";width:18px;height:3px;background:var(--oro);border-radius:2px}
+.fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:12px}
+.btn{background:var(--tinta);color:var(--blanco);border:none;border-radius:7px;padding:9px 16px;font-weight:600;font-size:13px}
+.btn:hover{background:var(--tinta-2)}
+.btn.oro{background:var(--oro);color:var(--tinta)}
+.btn.oro:hover{background:#B8941F}
+.btn.linea{background:none;border:1px solid var(--linea);color:var(--tinta)}
+.btn.peligro{background:none;border:1px solid var(--coral);color:var(--coral)}
+.btn.mini{padding:4px 10px;font-size:11.5px;border-radius:5px}
+.acciones{display:flex;gap:8px;flex-wrap:wrap}
+.aviso{background:var(--oro-suave);border:1px solid var(--oro);border-radius:8px;padding:10px 14px;font-size:12.5px;margin-bottom:16px}
+.alerta{background:#FBE9E2;border:1px solid var(--coral);color:#8A3418;border-radius:8px;padding:10px 14px;font-size:12.5px;margin-bottom:10px}
+.vacio{color:var(--gris);font-size:13px;font-style:italic;padding:8px 0}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--papel);border:1px solid var(--linea)}
+.chip .pt{width:7px;height:7px;border-radius:50%}
+.insignia{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:4px}
+.insignia.critico{background:var(--tinta);color:var(--oro)}
+.insignia.exp{background:var(--oro-suave);color:#7A6314}
+
+/* Cuadrícula de disponibilidad */
+.dispo-grid{display:grid;grid-template-columns:70px repeat(16,minmax(30px,1fr));gap:2px;overflow-x:auto;font-size:10px}
+.dispo-grid .cab{font-family:var(--display);font-weight:600;font-size:12px;text-align:center;padding:3px 0;color:var(--gris)}
+.dispo-grid .eti{font-size:10px;font-weight:600;color:var(--gris);display:flex;align-items:center;text-transform:uppercase;letter-spacing:.04em}
+.celda-d{border:1px solid var(--linea);border-radius:4px;height:26px;background:var(--blanco);cursor:pointer;transition:background .1s}
+.celda-d.on{background:var(--teal);border-color:var(--teal)}
+.celda-d:hover{outline:2px solid var(--oro)}
+
+/* Tabla general */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font-family:var(--display);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:8px;border-bottom:2px solid var(--tinta);color:var(--tinta)}
+td{padding:8px;border-bottom:1px solid var(--linea);vertical-align:middle}
+tr:hover td{background:#FBFAF7}
+.tabla-envoltura{overflow-x:auto}
+
+/* Cuadrilla / roles */
+.rol-fila{display:grid;grid-template-columns:26px 1fr 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--linea)}
+.rol-num{font-family:var(--display);font-weight:700;font-size:16px;color:var(--oro);text-align:center}
+.rol-nombre{font-size:12.5px;font-weight:600}
+.rol-nombre small{display:block;font-weight:400;color:var(--gris);font-size:10.5px}
+.podio{display:flex;align-items:flex-end;gap:4px;height:34px;margin-left:auto}
+.podio div{width:14px;background:var(--oro);border-radius:3px 3px 0 0}
+.podio .p2{height:20px;opacity:.65}.podio .p1{height:32px}.podio .p3{height:14px;opacity:.45}
+
+/* Matriz */
+.matriz td,.matriz th{text-align:center;padding:5px 4px;font-size:11px}
+.matriz td:first-child,.matriz th:first-child{text-align:left;font-weight:600;white-space:nowrap}
+.m-pt{width:10px;height:10px;border-radius:50%;display:inline-block}
+.m-disp{color:#C9C5B8;font-size:13px}
+.carga{font-family:var(--display);font-weight:700;font-size:14px}
+
+footer{text-align:center;font-size:11px;color:var(--gris);padding:20px;border-top:1px solid var(--linea)}
+@media(max-width:700px){
+  .tira{grid-template-columns:repeat(8,1fr)}
+  .rol-fila{grid-template-columns:22px 1fr}
+  .rol-fila select{grid-column:1/-1}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-top">
+    <h1>Cuadrillas de <span>Premiación</span></h1>
+    <div class="head-sub">Zona Norte · Puerto Plata — Santiago — Bonao · XXV Juegos Centroamericanos y del Caribe · 24 JUL – 8 AGO 2026</div>
+  </div>
+  <div class="tira" id="tiraCalendario" aria-label="Calendario de ceremonias por día"></div>
+</header>
+
+<nav>
+  <div class="tabs">
+    <button class="tab activo" data-panel="voluntarios">Voluntarios</button>
+    <button class="tab" data-panel="oficial">Programa oficial</button>
+    <button class="tab" data-panel="ceremonias">Ceremonias</button>
+    <button class="tab" data-panel="cuadrillas">Cuadrillas</button>
+    <button class="tab" data-panel="matriz">Matriz general</button>
+    <button class="tab" data-panel="datos">Guardar / Exportar</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ VOLUNTARIOS ============ -->
+<section class="panel activo" id="panel-voluntarios">
+  <div class="aviso">Registra aquí a cada voluntario con su disponibilidad. Toca las celdas de la cuadrícula para marcar <b>mañana (M)</b> y <b>tarde (T)</b> de cada día. Meta: 20–25 personas.</div>
+
+  <div class="tarjeta">
+    <h2>Recibir respuestas del formulario</h2>
+    <p style="font-size:12.5px;color:var(--gris);margin-bottom:8px">Comparte con tus voluntarios el enlace del archivo <b>formulario-voluntario.html</b> (súbelo a tu Vercel). Cada voluntario te enviará un código que empieza con <b>CPZN1|</b> — pégalos aquí (uno o varios, cada uno en su línea o mensaje) y cárgalos de una vez.</p>
+    <textarea id="cajaCodigos" rows="4" placeholder="Pega aquí uno o más códigos CPZN1|..." style="resize:vertical"></textarea>
+    <div class="acciones" style="margin-top:10px">
+      <button class="btn oro" id="btnCargarCodigos">Cargar respuestas</button>
+      <button class="btn linea" id="btnImpRespuestas">Importar archivos .txt de respuestas</button>
+      <input type="file" id="inputRespuestas" accept=".txt,.json" multiple style="display:none">
+    </div>
+    <div id="resultadoCodigos" style="margin-top:10px"></div>
+  </div>
+
+  <div class="tarjeta">
+    <h2 id="tituloFormVol">Registrar voluntario</h2>
+    <div class="fila">
+      <div><label>Nombre completo</label><input id="v-nombre" placeholder="Ej. Ana Rodríguez"></div>
+      <div><label>Teléfono / WhatsApp</label><input id="v-tel" placeholder="Ej. 809-555-0000"></div>
+      <div><label>Ciudad de residencia</label>
+        <select id="v-ciudad">
+          <option value="Santiago">Santiago</option>
+          <option value="Puerto Plata">Puerto Plata</option>
+          <option value="Bonao">Bonao</option>
+          <option value="Otra">Otra</option>
+        </select>
+      </div>
+    </div>
+    <div class="fila">
+      <div><label>Zona preferida</label>
+        <select id="v-zona">
+          <option value="todas">Todas (flexible)</option>
+          <option value="Santiago">Santiago</option>
+          <option value="Puerto Plata">Puerto Plata</option>
+          <option value="Bonao">Bonao</option>
+        </select>
+      </div>
+      <div><label>Transporte propio</label>
+        <select id="v-transporte"><option value="si">Sí</option><option value="no">No</option></select>
+      </div>
+      <div><label>Experiencia en protocolo</label>
+        <select id="v-exp"><option value="no">No</option><option value="si">Sí</option></select>
+      </div>
+    </div>
+    <label>Disponibilidad (toca para marcar)</label>
+    <div class="dispo-grid" id="dispoGrid"></div>
+    <div class="acciones" style="margin-top:14px">
+      <button class="btn oro" id="btnGuardarVol">Guardar voluntario</button>
+      <button class="btn linea" id="btnCancelarVol" style="display:none">Cancelar edición</button>
+      <button class="btn linea" id="btnEjemplo">Cargar 22 voluntarios de ejemplo</button>
+    </div>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Equipo registrado (<span id="numVols">0</span>)</h2>
+    <div class="tabla-envoltura"><table>
+      <thead><tr><th>Nombre</th><th>Ciudad</th><th>Zona pref.</th><th>Transp.</th><th>Exp.</th><th>Días disp.</th><th></th></tr></thead>
+      <tbody id="tablaVols"></tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ PROGRAMA OFICIAL ============ -->
+<section class="panel" id="panel-oficial">
+  <div class="aviso">Programa deportivo <b>oficial ver. 24</b> (Gerencia Deportiva SD2026, 06-05-26) para la Zona Norte. Celda azul = competencia, celda dorada = <b>día de medallas (premiación)</b>. Marca las disciplinas que gestionas y usa el botón para cargar sus días de medalla como ceremonias.</div>
+  <div class="tarjeta">
+    <h2>Zona Norte · 24 jul – 8 ago</h2>
+    <div class="tabla-envoltura"><table class="matriz"><thead id="oficialCab"></thead><tbody id="oficialCuerpo"></tbody></table></div>
+    <div style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap">
+      <span class="chip"><span class="pt" style="background:#2E5EAA"></span> Competencia</span>
+      <span class="chip"><span class="pt" style="background:#C9A227"></span> Día de medallas</span>
+    </div>
+    <div class="acciones" style="margin-top:14px">
+      <button class="btn oro" id="btnCargarOficial">Cargar días de medalla de las disciplinas marcadas</button>
+    </div>
+    <p style="margin-top:10px;font-size:12px;color:var(--gris)">Ojo: el 29 jul coinciden las medallas de Surf (Puerto Plata) y Remo (Bonao) — necesitarás dos cuadrillas simultáneas ese día. El 6 y 7 ago coinciden Canotaje (Bonao, mañana) con las finales de Fútbol (Santiago, tarde).</p>
+  </div>
+</section>
+
+<!-- ============ CEREMONIAS ============ -->
+<section class="panel" id="panel-ceremonias">
+  <div class="aviso"><b>Ceremonias cargadas desde el programa oficial ver. 24</b> (días de medalla confirmados). La franja mañana/tarde es sugerida — confírmala con el horario detallado de cada sede. Puedes agregar ceremonias adicionales si una disciplina premia en más de un momento del día.</div>
+
+  <div class="tarjeta">
+    <h2>Agregar ceremonia de premiación</h2>
+    <div class="fila">
+      <div><label>Disciplina</label><select id="c-disciplina"></select></div>
+      <div><label>Fecha</label><select id="c-fecha"></select></div>
+      <div><label>Franja</label><select id="c-franja"><option value="am">Mañana</option><option value="pm">Tarde</option></select></div>
+      <div><label>Detalle (opcional)</label><input id="c-detalle" placeholder="Ej. Finales K-1 y C-2"></div>
+    </div>
+    <button class="btn oro" id="btnGuardarCer">Agregar ceremonia</button>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Calendario de ceremonias (<span id="numCers">0</span>)</h2>
+    <div class="tabla-envoltura"><table>
+      <thead><tr><th>Fecha</th><th>Franja</th><th>Disciplina</th><th>Sede</th><th>Detalle</th><th>Cuadrilla</th><th></th></tr></thead>
+      <tbody id="tablaCers"></tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ CUADRILLAS ============ -->
+<section class="panel" id="panel-cuadrillas">
+  <div class="aviso">Selecciona un día en la tira del calendario (arriba) o aquí abajo. El botón <b>Asignación automática</b> llena los 13 roles con voluntarios disponibles, priorizando zona preferida, transporte y balance de carga. Los roles <span class="insignia critico">crítico</span> se asignan primero a personas con experiencia.</div>
+  <div class="tarjeta">
+    <h2>Día de trabajo <div class="podio" aria-hidden="true"><div class="p2"></div><div class="p1"></div><div class="p3"></div></div></h2>
+    <div class="fila" style="grid-template-columns:200px 1fr">
+      <div><label>Fecha</label><select id="q-fecha"></select></div>
+    </div>
+    <div id="zonaCuadrillas"></div>
+  </div>
+</section>
+
+<!-- ============ MATRIZ ============ -->
+<section class="panel" id="panel-matriz">
+  <div class="aviso">Vista global: cada punto de color es una asignación (por disciplina), el punto gris claro indica disponibilidad sin asignar. La columna <b>Carga</b> suma ceremonias por persona — busca equilibrio.</div>
+  <div id="avisosMatriz"></div>
+  <div class="tarjeta">
+    <h2>Matriz voluntario × día</h2>
+    <div class="tabla-envoltura"><table class="matriz"><thead id="matrizCab"></thead><tbody id="matrizCuerpo"></tbody></table></div>
+    <div style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap" id="leyenda"></div>
+  </div>
+</section>
+
+<!-- ============ DATOS ============ -->
+<section class="panel" id="panel-datos">
+  <div class="aviso"><b>Guardado automático activo:</b> tus datos se guardan solos en este navegador y estarán aquí al volver a abrir la página. Ojo: se guardan <b>por dispositivo</b> — lo que registres en la computadora no aparece en el celular. Para pasar datos entre dispositivos o tener un respaldo seguro, exporta el JSON y luego impórtalo donde lo necesites. El CSV sirve para compartir el plan con INEFI o el comité.</div>
+  <div class="tarjeta">
+    <h2>Guardar y compartir</h2>
+    <div class="acciones">
+      <button class="btn oro" id="btnExpJson">Exportar respaldo (JSON)</button>
+      <button class="btn" id="btnImpJson">Importar respaldo (JSON)</button>
+      <button class="btn linea" id="btnExpCsv">Exportar plan de cuadrillas (CSV)</button>
+      <button class="btn linea" id="btnExpVolsCsv">Exportar voluntarios (CSV)</button>
+      <button class="btn peligro" id="btnBorrarTodo">Borrar todo</button>
+      <input type="file" id="inputJson" accept=".json" style="display:none">
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>Gestión de premiación · Zona Norte · Santo Domingo 2026 · Herramienta de planificación interna</footer>
+
+<script>
+/* ================= DATOS BASE ================= */
+const FECHAS = [];
+(function(){
+  const ini = new Date(2026,6,24);
+  for(let i=0;i<16;i++){
+    const d = new Date(ini); d.setDate(ini.getDate()+i);
+    FECHAS.push(d.toISOString().slice(0,10));
+  }
+})();
+const MESES = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+function fmt(f){ const [y,m,d]=f.split("-"); return parseInt(d)+" "+MESES[parseInt(m)-1]; }
+function fmtLargo(f){
+  const dias=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+  const [y,m,d]=f.split("-"); const dt=new Date(parseInt(y),parseInt(m)-1,parseInt(d));
+  return dias[dt.getDay()]+" "+parseInt(d)+" "+MESES[parseInt(m)-1].toLowerCase();
+}
+
+const DISCIPLINAS = {
+  surf:     {nombre:"Surf",             sede:"Playa Encuentro, Puerto Plata", zona:"Puerto Plata", color:"#0E7C7B"},
+  bmx:      {nombre:"Ciclismo BMX",     sede:"La Barranquita, Santiago",      zona:"Santiago",     color:"#E4572E"},
+  mtb:      {nombre:"Mountain Bike",    sede:"La Barranquita, Santiago",      zona:"Santiago",     color:"#4C7A34"},
+  futbolF:  {nombre:"Fútbol Femenino",  sede:"Estadio Cibao FC, Santiago",    zona:"Santiago",     color:"#2E5EAA"},
+  futbolM:  {nombre:"Fútbol Masculino", sede:"Estadio Cibao FC, Santiago",    zona:"Santiago",     color:"#16325C"},
+  canotaje: {nombre:"Canotaje Velocidad",sede:"Presa de Rincón, Bonao",       zona:"Bonao",        color:"#C9A227"},
+  remo:     {nombre:"Remo",             sede:"Presa de Rincón, Bonao",        zona:"Bonao",        color:"#6B4E9B"}
+};
+
+/* Programa oficial SD2026 — ver. 24 (Gerencia Deportiva, 06-05-26)
+   c = día de competencia · m = día de competencia/medalla (requiere premiación) */
+const PROGRAMA_OFICIAL = {
+  surf:     {"2026-07-25":"c","2026-07-26":"c","2026-07-27":"c","2026-07-28":"c","2026-07-29":"m"},
+  remo:     {"2026-07-25":"c","2026-07-26":"c","2026-07-27":"c","2026-07-28":"c","2026-07-29":"m"},
+  bmx:      {"2026-07-30":"m"},
+  mtb:      {"2026-08-01":"m"},
+  futbolF:  {"2026-07-29":"c","2026-07-31":"c","2026-08-02":"c","2026-08-04":"c","2026-08-06":"m"},
+  futbolM:  {"2026-07-30":"c","2026-08-01":"c","2026-08-03":"c","2026-08-05":"c","2026-08-07":"m"},
+  canotaje: {"2026-08-05":"m","2026-08-06":"m","2026-08-07":"m"}
+};
+
+const ROLES = [
+  {n:"Jefe/a de Protocolo",            d:"Dirige la ceremonia y el orden del podio", critico:true},
+  {n:"Asistente de Protocolo",         d:"Apoya al jefe, controla tiempos y guion",  critico:true},
+  {n:"Portador/a de Bandeja 1 (Oro)",  d:"Bandeja de medallas de oro",               critico:true},
+  {n:"Portador/a de Bandeja 2 (Plata)",d:"Bandeja de medallas de plata",             critico:false},
+  {n:"Portador/a de Bandeja 3 (Bronce)",d:"Bandeja de medallas de bronce",           critico:false},
+  {n:"Portador/a de Premios 1",        d:"Flores, mascotas y obsequios",             critico:false},
+  {n:"Portador/a de Premios 2",        d:"Flores, mascotas y obsequios",             critico:false},
+  {n:"Escolta de Autoridad 1",         d:"Acompaña a la autoridad premiadora",       critico:false},
+  {n:"Escolta de Autoridad 2",         d:"Acompaña a la autoridad premiadora",       critico:false},
+  {n:"Edecán de Atletas 1",            d:"Conduce a los atletas al podio",           critico:false},
+  {n:"Edecán de Atletas 2",            d:"Conduce a los atletas al podio",           critico:false},
+  {n:"Coordinador/a de Podio y Banderas",d:"Izado de banderas y montaje del podio",  critico:true},
+  {n:"Enlace de Locución e Himnos",    d:"Coordina con locutor y sonido los himnos", critico:false}
+];
+
+/* Ceremonias precargadas: días de medalla del calendario oficial ver. 24.
+   La franja (mañana/tarde) es sugerida — confírmala con el horario detallado de cada sede. */
+const CEREMONIAS_INICIALES = [
+  {disc:"surf",     fecha:"2026-07-29", franja:"am", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"remo",     fecha:"2026-07-29", franja:"am", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"bmx",      fecha:"2026-07-30", franja:"pm", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"mtb",      fecha:"2026-08-01", franja:"am", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"canotaje", fecha:"2026-08-05", franja:"am", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"canotaje", fecha:"2026-08-06", franja:"am", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"canotaje", fecha:"2026-08-07", franja:"am", detalle:"Día de medallas — oficial ver. 24"},
+  {disc:"futbolF",  fecha:"2026-08-06", franja:"pm", detalle:"Partido por medalla — oficial ver. 24"},
+  {disc:"futbolM",  fecha:"2026-08-07", franja:"pm", detalle:"Partido por medalla — oficial ver. 24"}
+];
+
+/* ================= ESTADO ================= */
+let estado = { voluntarios: [], ceremonias: [], asignaciones: {} };
+let editandoVol = null;
+let dispoTemp = {};
+let uid = () => Math.random().toString(36).slice(2,9);
+
+function iniciarCeremonias(){
+  estado.ceremonias = CEREMONIAS_INICIALES.map(c => ({id:uid(), ...c}));
+}
+
+/* ================= GUARDADO AUTOMÁTICO (navegador) ================= */
+const CLAVE_LOCAL = "cpzn-zona-norte-v1";
+function guardarLocal(){
+  try{ localStorage.setItem(CLAVE_LOCAL, JSON.stringify(estado)); }catch(e){}
+}
+function cargarLocal(){
+  try{
+    const crudo = localStorage.getItem(CLAVE_LOCAL);
+    if(!crudo) return false;
+    const datos = JSON.parse(crudo);
+    if(datos && datos.voluntarios && datos.ceremonias){ estado = datos; return true; }
+  }catch(e){}
+  return false;
+}
+
+/* ================= TIRA CALENDARIO ================= */
+function pintarTira(){
+  const cont = document.getElementById("tiraCalendario");
+  cont.innerHTML = "";
+  const sel = document.getElementById("q-fecha") ? document.getElementById("q-fecha").value : null;
+  FECHAS.forEach(f => {
+    const div = document.createElement("div");
+    div.className = "dia" + (f===sel ? " activo" : "");
+    const [y,m,d] = f.split("-");
+    const cers = estado.ceremonias.filter(c => c.fecha===f);
+    let pts = "";
+    cers.forEach(c => { pts += '<span class="pt" style="background:'+DISCIPLINAS[c.disc].color+'"></span>'; });
+    div.innerHTML = '<span class="num">'+parseInt(d)+'</span><span class="mes">'+MESES[parseInt(m)-1]+'</span><div class="puntos">'+pts+'</div>';
+    div.onclick = () => { document.getElementById("q-fecha").value = f; irPanel("cuadrillas"); pintarCuadrillas(); pintarTira(); };
+    cont.appendChild(div);
+  });
+}
+
+/* ================= PESTAÑAS ================= */
+function irPanel(nombre){
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("activo", t.dataset.panel===nombre));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("activo", p.id==="panel-"+nombre));
+}
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  irPanel(t.dataset.panel);
+  if(t.dataset.panel==="matriz") pintarMatriz();
+  if(t.dataset.panel==="cuadrillas") pintarCuadrillas();
+});
+
+/* ================= FORMULARIO VOLUNTARIO ================= */
+function pintarDispoGrid(){
+  const g = document.getElementById("dispoGrid");
+  g.innerHTML = '<div></div>' + FECHAS.map(f => '<div class="cab">'+parseInt(f.slice(8))+'<br><span style="font-size:8px">'+MESES[parseInt(f.slice(5,7))-1]+'</span></div>').join("");
+  ["am","pm"].forEach(fr => {
+    g.innerHTML += '<div class="eti">'+(fr==="am"?"Mañana":"Tarde")+'</div>';
+    FECHAS.forEach(f => {
+      const on = dispoTemp[f] && dispoTemp[f].includes(fr);
+      g.innerHTML += '<div class="celda-d'+(on?" on":"")+'" data-f="'+f+'" data-fr="'+fr+'" role="checkbox" aria-checked="'+(!!on)+'" tabindex="0"></div>';
+    });
+  });
+  g.querySelectorAll(".celda-d").forEach(c => {
+    const alternar = () => {
+      const f=c.dataset.f, fr=c.dataset.fr;
+      if(!dispoTemp[f]) dispoTemp[f]=[];
+      const i = dispoTemp[f].indexOf(fr);
+      if(i>=0) dispoTemp[f].splice(i,1); else dispoTemp[f].push(fr);
+      if(dispoTemp[f].length===0) delete dispoTemp[f];
+      c.classList.toggle("on");
+      c.setAttribute("aria-checked", c.classList.contains("on"));
+    };
+    c.onclick = alternar;
+    c.onkeydown = e => { if(e.key===" "||e.key==="Enter"){e.preventDefault();alternar();} };
+  });
+}
+
+document.getElementById("btnGuardarVol").onclick = () => {
+  const nombre = document.getElementById("v-nombre").value.trim();
+  if(!nombre){ alert("Escribe el nombre del voluntario."); return; }
+  const v = {
+    id: editandoVol || uid(),
+    nombre,
+    tel: document.getElementById("v-tel").value.trim(),
+    ciudad: document.getElementById("v-ciudad").value,
+    zona: document.getElementById("v-zona").value,
+    transporte: document.getElementById("v-transporte").value==="si",
+    exp: document.getElementById("v-exp").value==="si",
+    dispo: JSON.parse(JSON.stringify(dispoTemp))
+  };
+  if(editandoVol){
+    const i = estado.voluntarios.findIndex(x => x.id===editandoVol);
+    estado.voluntarios[i] = v;
+  } else estado.voluntarios.push(v);
+  limpiarFormVol(); pintarVols();
+};
+
+function limpiarFormVol(){
+  editandoVol = null; dispoTemp = {};
+  ["v-nombre","v-tel"].forEach(id => document.getElementById(id).value="");
+  document.getElementById("tituloFormVol").textContent = "Registrar voluntario";
+  document.getElementById("btnCancelarVol").style.display = "none";
+  pintarDispoGrid();
+}
+document.getElementById("btnCancelarVol").onclick = limpiarFormVol;
+
+function pintarVols(){
+  guardarLocal();
+  const tb = document.getElementById("tablaVols");
+  document.getElementById("numVols").textContent = estado.voluntarios.length;
+  if(estado.voluntarios.length===0){ tb.innerHTML = '<tr><td colspan="7" class="vacio">Aún no hay voluntarios registrados.</td></tr>'; return; }
+  tb.innerHTML = estado.voluntarios.map(v => {
+    const dias = Object.keys(v.dispo).length;
+    return '<tr><td><b>'+v.nombre+'</b>'+(v.tel?'<br><span style="color:var(--gris);font-size:11px">'+v.tel+'</span>':'')+'</td>'+
+      '<td>'+v.ciudad+'</td><td>'+(v.zona==="todas"?"Flexible":v.zona)+'</td>'+
+      '<td>'+(v.transporte?"Sí":"No")+'</td>'+
+      '<td>'+(v.exp?'<span class="insignia exp">Protocolo</span>':"—")+'</td>'+
+      '<td>'+dias+' día'+(dias!==1?"s":"")+'</td>'+
+      '<td style="white-space:nowrap"><button class="btn mini linea" onclick="editarVol(\''+v.id+'\')">Editar</button> '+
+      '<button class="btn mini peligro" onclick="borrarVol(\''+v.id+'\')">Quitar</button></td></tr>';
+  }).join("");
+}
+
+window.editarVol = id => {
+  const v = estado.voluntarios.find(x => x.id===id); if(!v) return;
+  editandoVol = id; dispoTemp = JSON.parse(JSON.stringify(v.dispo));
+  document.getElementById("v-nombre").value = v.nombre;
+  document.getElementById("v-tel").value = v.tel;
+  document.getElementById("v-ciudad").value = v.ciudad;
+  document.getElementById("v-zona").value = v.zona;
+  document.getElementById("v-transporte").value = v.transporte?"si":"no";
+  document.getElementById("v-exp").value = v.exp?"si":"no";
+  document.getElementById("tituloFormVol").textContent = "Editar: "+v.nombre;
+  document.getElementById("btnCancelarVol").style.display = "inline-block";
+  pintarDispoGrid();
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+window.borrarVol = id => {
+  if(!confirm("¿Quitar este voluntario? Se eliminarán también sus asignaciones.")) return;
+  estado.voluntarios = estado.voluntarios.filter(v => v.id!==id);
+  Object.values(estado.asignaciones).forEach(a => {
+    Object.keys(a.roles).forEach(r => { if(a.roles[r]===id) delete a.roles[r]; });
+    a.suplentes = a.suplentes.filter(s => s!==id);
+  });
+  pintarVols(); pintarMatriz();
+};
+
+/* Voluntarios de ejemplo */
+document.getElementById("btnEjemplo").onclick = () => {
+  if(estado.voluntarios.length>0 && !confirm("Se agregarán 22 voluntarios de ejemplo a los existentes. ¿Continuar?")) return;
+  const nombres = ["Ana Rodríguez","Luis Peña","María Gómez","José Tavárez","Carmen Núñez","Pedro Batista","Rosa Almonte","Miguel Castillo","Laura Reyes","Juan Hernández","Yudelka Santos","Rafael Marte","Patricia Cruz","Andrés Polanco","Génesis Vargas","Carlos Disla","Nicole Fernández","Wilson Abreu","Estefanía Toribio","Manuel Rosario","Karla Jiménez","Frank Espinal"];
+  const ciudades = ["Santiago","Santiago","Santiago","Santiago","Santiago","Santiago","Santiago","Santiago","Puerto Plata","Puerto Plata","Puerto Plata","Puerto Plata","Puerto Plata","Bonao","Bonao","Bonao","Bonao","Santiago","Santiago","Puerto Plata","Bonao","Santiago"];
+  nombres.forEach((n,i) => {
+    const dispo = {};
+    FECHAS.forEach((f,j) => {
+      // patrón variado de disponibilidad
+      if((i+j)%3!==0){ dispo[f] = ((i+j)%2===0) ? ["am","pm"] : (j%2===0?["am"]:["pm"]); }
+    });
+    estado.voluntarios.push({
+      id: uid(), nombre:n, tel:"809-555-01"+String(i).padStart(2,"0"),
+      ciudad: ciudades[i], zona: i%4===0 ? "todas" : ciudades[i],
+      transporte: i%3!==0, exp: i%4===0 || i===1 || i===5, dispo
+    });
+  });
+  pintarVols();
+};
+
+/* ================= CEREMONIAS ================= */
+function pintarSelectsCer(){
+  document.getElementById("c-disciplina").innerHTML = Object.keys(DISCIPLINAS).map(k => '<option value="'+k+'">'+DISCIPLINAS[k].nombre+' — '+DISCIPLINAS[k].zona+'</option>').join("");
+  const opFechas = FECHAS.map(f => '<option value="'+f+'">'+fmtLargo(f)+'</option>').join("");
+  document.getElementById("c-fecha").innerHTML = opFechas;
+  document.getElementById("q-fecha").innerHTML = opFechas;
+}
+
+document.getElementById("btnGuardarCer").onclick = () => {
+  estado.ceremonias.push({
+    id: uid(),
+    disc: document.getElementById("c-disciplina").value,
+    fecha: document.getElementById("c-fecha").value,
+    franja: document.getElementById("c-franja").value,
+    detalle: document.getElementById("c-detalle").value.trim()
+  });
+  document.getElementById("c-detalle").value = "";
+  pintarCers(); pintarTira();
+};
+
+function estadoCuadrilla(cer){
+  const a = estado.asignaciones[cer.id];
+  const llenos = a ? Object.values(a.roles).filter(Boolean).length : 0;
+  return llenos;
+}
+
+function pintarCers(){
+  guardarLocal();
+  const tb = document.getElementById("tablaCers");
+  document.getElementById("numCers").textContent = estado.ceremonias.length;
+  const orden = [...estado.ceremonias].sort((a,b) => a.fecha===b.fecha ? (a.franja>b.franja?1:-1) : (a.fecha>b.fecha?1:-1));
+  if(orden.length===0){ tb.innerHTML = '<tr><td colspan="7" class="vacio">No hay ceremonias programadas.</td></tr>'; return; }
+  tb.innerHTML = orden.map(c => {
+    const D = DISCIPLINAS[c.disc];
+    const llenos = estadoCuadrilla(c);
+    const color = llenos===13 ? "var(--verde)" : (llenos>0 ? "var(--oro)" : "var(--coral)");
+    return '<tr><td><b>'+fmtLargo(c.fecha)+'</b></td><td>'+(c.franja==="am"?"Mañana":"Tarde")+'</td>'+
+      '<td><span class="chip"><span class="pt" style="background:'+D.color+'"></span>'+D.nombre+'</span></td>'+
+      '<td>'+D.sede+'</td><td>'+(c.detalle||"—")+'</td>'+
+      '<td style="font-weight:700;color:'+color+'">'+llenos+'/13</td>'+
+      '<td style="white-space:nowrap"><button class="btn mini linea" onclick="verCuadrilla(\''+c.fecha+'\')">Cuadrilla</button> '+
+      '<button class="btn mini peligro" onclick="borrarCer(\''+c.id+'\')">Quitar</button></td></tr>';
+  }).join("");
+}
+window.borrarCer = id => {
+  if(!confirm("¿Quitar esta ceremonia y su cuadrilla asignada?")) return;
+  estado.ceremonias = estado.ceremonias.filter(c => c.id!==id);
+  delete estado.asignaciones[id];
+  pintarCers(); pintarTira(); pintarMatriz();
+};
+window.verCuadrilla = f => { document.getElementById("q-fecha").value = f; irPanel("cuadrillas"); pintarCuadrillas(); pintarTira(); };
+
+/* ================= LÓGICA DE ASIGNACIÓN ================= */
+function disponibles(fecha, franja){
+  return estado.voluntarios.filter(v => v.dispo[fecha] && v.dispo[fecha].includes(franja));
+}
+function asignadosEseDia(fecha, exceptoCerId){
+  const ocupados = new Set();
+  estado.ceremonias.filter(c => c.fecha===fecha && c.id!==exceptoCerId).forEach(c => {
+    const a = estado.asignaciones[c.id]; if(!a) return;
+    Object.values(a.roles).forEach(vid => { if(vid) ocupados.add(vid); });
+  });
+  return ocupados;
+}
+function cargaTotal(vid){
+  let n = 0;
+  Object.values(estado.asignaciones).forEach(a => { Object.values(a.roles).forEach(x => { if(x===vid) n++; }); });
+  return n;
+}
+function puntaje(v, zona){
+  let p = 0;
+  if(v.zona===zona) p += 30;
+  else if(v.zona==="todas") p += 18;
+  if(v.ciudad===zona) p += 20;
+  else if(v.transporte) p += 10;
+  p -= cargaTotal(v.id) * 8;           // balance de carga
+  return p;
+}
+
+function autoAsignar(cerId){
+  const cer = estado.ceremonias.find(c => c.id===cerId); if(!cer) return;
+  const zona = DISCIPLINAS[cer.disc].zona;
+  const ocupados = asignadosEseDia(cer.fecha, cerId);
+  let candidatos = disponibles(cer.fecha, cer.franja).filter(v => !ocupados.has(v.id));
+  const asig = { roles:{}, suplentes:[] };
+  const usados = new Set();
+
+  // 1) Roles críticos → prioriza experiencia
+  ROLES.forEach((r,i) => {
+    if(!r.critico) return;
+    const pool = candidatos.filter(v => !usados.has(v.id)).sort((a,b) => {
+      const ea=(a.exp?100:0)+puntaje(a,zona), eb=(b.exp?100:0)+puntaje(b,zona);
+      return eb-ea;
+    });
+    if(pool[0]){ asig.roles[i]=pool[0].id; usados.add(pool[0].id); }
+  });
+  // 2) Resto de roles
+  ROLES.forEach((r,i) => {
+    if(asig.roles[i]) return;
+    const pool = candidatos.filter(v => !usados.has(v.id)).sort((a,b) => puntaje(b,zona)-puntaje(a,zona));
+    if(pool[0]){ asig.roles[i]=pool[0].id; usados.add(pool[0].id); }
+  });
+  // 3) Suplentes (hasta 3)
+  candidatos.filter(v => !usados.has(v.id)).sort((a,b) => puntaje(b,zona)-puntaje(a,zona)).slice(0,3)
+    .forEach(v => asig.suplentes.push(v.id));
+
+  estado.asignaciones[cerId] = asig;
+  pintarCuadrillas(); pintarCers();
+}
+
+/* ================= PANEL CUADRILLAS ================= */
+function pintarCuadrillas(){
+  const fecha = document.getElementById("q-fecha").value || FECHAS[0];
+  document.getElementById("q-fecha").value = fecha;
+  const zona = document.getElementById("zonaCuadrillas");
+  const cers = estado.ceremonias.filter(c => c.fecha===fecha).sort((a,b) => a.franja>b.franja?1:-1);
+  if(cers.length===0){ zona.innerHTML = '<p class="vacio">No hay ceremonias programadas el '+fmtLargo(fecha)+'. Agrégalas en la pestaña Ceremonias.</p>'; return; }
+
+  zona.innerHTML = cers.map(cer => {
+    const D = DISCIPLINAS[cer.disc];
+    const a = estado.asignaciones[cer.id] || {roles:{},suplentes:[]};
+    const ocupadosOtras = asignadosEseDia(fecha, cer.id);
+    const cands = disponibles(fecha, cer.franja);
+    const llenos = Object.values(a.roles).filter(Boolean).length;
+
+    const filas = ROLES.map((r,i) => {
+      const sel = a.roles[i] || "";
+      const ops = ['<option value="">— Sin asignar —</option>'].concat(
+        cands.map(v => {
+          const enOtra = ocupadosOtras.has(v.id);
+          const enEsta = Object.entries(a.roles).some(([k,vid]) => vid===v.id && parseInt(k)!==i);
+          const eti = v.nombre + (v.exp?" ★":"") + " · " + v.ciudad + (enOtra?" (en otra cuadrilla)":"");
+          const des = (enOtra||enEsta) && sel!==v.id ? " disabled" : "";
+          return '<option value="'+v.id+'"'+(sel===v.id?" selected":"")+des+'>'+eti+'</option>';
+        })
+      ).join("");
+      return '<div class="rol-fila"><div class="rol-num">'+(i+1)+'</div>'+
+        '<div class="rol-nombre">'+r.n+' '+(r.critico?'<span class="insignia critico">crítico</span>':'')+'<small>'+r.d+'</small></div>'+
+        '<select data-cer="'+cer.id+'" data-rol="'+i+'" class="sel-rol">'+ops+'</select></div>';
+    }).join("");
+
+    const sup = a.suplentes.map(id => { const v=estado.voluntarios.find(x=>x.id===id); return v?v.nombre:""; }).filter(Boolean).join(", ");
+    const colorEstado = llenos===13?"var(--verde)":(llenos>0?"var(--oro)":"var(--coral)");
+
+    return '<div class="tarjeta" style="border-left:5px solid '+D.color+'">'+
+      '<h2>'+D.nombre+' · '+(cer.franja==="am"?"Mañana":"Tarde")+
+      ' <span style="font-size:13px;font-family:var(--cuerpo);color:var(--gris);text-transform:none;font-weight:400">'+D.sede+(cer.detalle?' · '+cer.detalle:'')+'</span>'+
+      ' <span style="margin-left:auto;font-size:16px;color:'+colorEstado+'">'+llenos+'/13</span></h2>'+
+      '<div class="acciones" style="margin-bottom:10px">'+
+      '<button class="btn oro mini" onclick="autoAsignar(\''+cer.id+'\')">Asignación automática</button>'+
+      '<button class="btn linea mini" onclick="vaciarCuadrilla(\''+cer.id+'\')">Vaciar cuadrilla</button>'+
+      '<span class="chip">Disponibles esa franja: '+cands.length+'</span></div>'+
+      filas +
+      '<p style="margin-top:10px;font-size:12px"><b>Suplentes sugeridos:</b> '+(sup||"—")+'</p></div>';
+  }).join("");
+
+  zona.querySelectorAll(".sel-rol").forEach(s => {
+    s.onchange = () => {
+      const cid = s.dataset.cer, rol = s.dataset.rol;
+      if(!estado.asignaciones[cid]) estado.asignaciones[cid] = {roles:{},suplentes:[]};
+      if(s.value) estado.asignaciones[cid].roles[rol] = s.value;
+      else delete estado.asignaciones[cid].roles[rol];
+      pintarCuadrillas(); pintarCers();
+    };
+  });
+}
+window.autoAsignar = autoAsignar;
+window.vaciarCuadrilla = id => { delete estado.asignaciones[id]; pintarCuadrillas(); pintarCers(); };
+document.getElementById("q-fecha").addEventListener("change", () => { pintarCuadrillas(); pintarTira(); });
+
+/* ================= MATRIZ ================= */
+function pintarMatriz(){
+  const cab = document.getElementById("matrizCab");
+  const cuerpo = document.getElementById("matrizCuerpo");
+  cab.innerHTML = '<tr><th>Voluntario</th>' + FECHAS.map(f => '<th>'+parseInt(f.slice(8))+'</th>').join("") + '<th>Carga</th></tr>';
+  if(estado.voluntarios.length===0){ cuerpo.innerHTML = '<tr><td colspan="18" class="vacio">Sin voluntarios registrados.</td></tr>'; return; }
+
+  const asigPorVolFecha = {};
+  estado.ceremonias.forEach(c => {
+    const a = estado.asignaciones[c.id]; if(!a) return;
+    Object.values(a.roles).forEach(vid => {
+      if(!vid) return;
+      if(!asigPorVolFecha[vid]) asigPorVolFecha[vid] = {};
+      asigPorVolFecha[vid][c.fecha] = c.disc;
+    });
+  });
+
+  cuerpo.innerHTML = estado.voluntarios.map(v => {
+    let carga = cargaTotal(v.id);
+    const celdas = FECHAS.map(f => {
+      const asig = asigPorVolFecha[v.id] && asigPorVolFecha[v.id][f];
+      if(asig) return '<td><span class="m-pt" style="background:'+DISCIPLINAS[asig].color+'" title="'+DISCIPLINAS[asig].nombre+'"></span></td>';
+      if(v.dispo[f]) return '<td><span class="m-disp">·</span></td>';
+      return '<td></td>';
+    }).join("");
+    return '<tr><td>'+v.nombre+(v.exp?" ★":"")+'</td>'+celdas+'<td class="carga">'+carga+'</td></tr>';
+  }).join("");
+
+  document.getElementById("leyenda").innerHTML = Object.keys(DISCIPLINAS).map(k =>
+    '<span class="chip"><span class="pt" style="background:'+DISCIPLINAS[k].color+'"></span>'+DISCIPLINAS[k].nombre+'</span>'
+  ).join("") + '<span class="chip"><span style="color:#C9C5B8;font-weight:700">·</span> Disponible sin asignar</span>';
+
+  // Avisos
+  const avisos = [];
+  estado.ceremonias.forEach(c => {
+    const llenos = estadoCuadrilla(c);
+    if(llenos < 13) avisos.push("Cuadrilla incompleta ("+llenos+"/13): "+DISCIPLINAS[c.disc].nombre+" el "+fmtLargo(c.fecha)+".");
+  });
+  document.getElementById("avisosMatriz").innerHTML = avisos.length
+    ? avisos.map(a => '<div class="alerta">'+a+'</div>').join("")
+    : '<div class="aviso" style="background:#E7F0E2;border-color:var(--verde)">Todas las cuadrillas están completas (13/13). ¡Lista para presentar!</div>';
+}
+
+/* ================= PROGRAMA OFICIAL ================= */
+function pintarOficial(){
+  const cab = document.getElementById("oficialCab");
+  const cuerpo = document.getElementById("oficialCuerpo");
+  cab.innerHTML = '<tr><th style="min-width:150px">Disciplina</th>' + FECHAS.map(f => '<th>'+parseInt(f.slice(8))+'<br><span style="font-weight:400;font-size:9px">'+MESES[parseInt(f.slice(5,7))-1]+'</span></th>').join("") + '</tr>';
+  cuerpo.innerHTML = Object.keys(DISCIPLINAS).map(k => {
+    const D = DISCIPLINAS[k], prog = PROGRAMA_OFICIAL[k] || {};
+    const celdas = FECHAS.map(f => {
+      const t = prog[f];
+      if(t==="m") return '<td><span class="m-pt" style="background:#C9A227;width:14px;height:14px;border-radius:3px" title="Medallas '+fmt(f)+'"></span></td>';
+      if(t==="c") return '<td><span class="m-pt" style="background:#2E5EAA;width:14px;height:14px;border-radius:3px;opacity:.55" title="Competencia '+fmt(f)+'"></span></td>';
+      return '<td></td>';
+    }).join("");
+    return '<tr><td><label style="display:flex;align-items:center;gap:6px;margin:0;font-size:12px;text-transform:none;letter-spacing:0;color:var(--tinta);cursor:pointer">'+
+      '<input type="checkbox" class="chk-disc" value="'+k+'" checked style="width:auto"> '+
+      '<span class="pt" style="width:8px;height:8px;border-radius:50%;background:'+D.color+';flex-shrink:0"></span>'+D.nombre+'</label>'+
+      '<div style="font-size:10px;color:var(--gris)">'+D.zona+'</div></td>'+celdas+'</tr>';
+  }).join("");
+}
+
+document.getElementById("btnCargarOficial").onclick = () => {
+  const marcadas = [...document.querySelectorAll(".chk-disc:checked")].map(c => c.value);
+  if(marcadas.length===0){ alert("Marca al menos una disciplina."); return; }
+  let nuevas = 0;
+  marcadas.forEach(k => {
+    Object.entries(PROGRAMA_OFICIAL[k]||{}).forEach(([f,t]) => {
+      if(t!=="m") return;
+      const existe = estado.ceremonias.some(c => c.disc===k && c.fecha===f);
+      if(existe) return;
+      const franja = (k==="bmx"||k==="futbolF"||k==="futbolM") ? "pm" : "am";
+      estado.ceremonias.push({id:uid(), disc:k, fecha:f, franja, detalle:"Día de medallas — oficial ver. 24"});
+      nuevas++;
+    });
+  });
+  pintarCers(); pintarTira(); pintarMatriz();
+  alert(nuevas>0 ? nuevas+" ceremonia(s) agregada(s) desde el programa oficial." : "Los días de medalla de esas disciplinas ya estaban cargados.");
+  if(nuevas>0) irPanel("ceremonias");
+};
+
+/* ================= RESPUESTAS DEL FORMULARIO ================= */
+function deB64(s){
+  return JSON.parse(decodeURIComponent(escape(atob(s))));
+}
+function procesarCodigos(texto){
+  const encontrados = texto.match(/CPZN1\|[A-Za-z0-9+/=]+/g) || [];
+  let nuevos = 0, actualizados = 0, errores = 0;
+  encontrados.forEach(cod => {
+    try{
+      const d = deB64(cod.slice(6));
+      if(!d.nombre || !d.dispo) throw new Error("incompleto");
+      const v = {
+        id: uid(), nombre: d.nombre, tel: d.tel||"", ciudad: d.ciudad||"Otra",
+        zona: d.zona||"todas", transporte: !!d.transporte, exp: !!d.exp,
+        dispo: d.dispo||{}
+      };
+      const idx = estado.voluntarios.findIndex(x =>
+        x.nombre.trim().toLowerCase()===v.nombre.trim().toLowerCase() ||
+        (x.tel && v.tel && x.tel.replace(/\D/g,"")===v.tel.replace(/\D/g,"")));
+      if(idx>=0){ v.id = estado.voluntarios[idx].id; estado.voluntarios[idx] = v; actualizados++; }
+      else { estado.voluntarios.push(v); nuevos++; }
+    }catch(e){ errores++; }
+  });
+  const res = document.getElementById("resultadoCodigos");
+  if(encontrados.length===0){
+    res.innerHTML = '<div class="alerta">No se encontró ningún código CPZN1| en el texto pegado.</div>';
+    return;
+  }
+  let msg = nuevos+" voluntario(s) nuevo(s)";
+  if(actualizados) msg += ", "+actualizados+" actualizado(s)";
+  if(errores) msg += ", "+errores+" código(s) con error";
+  res.innerHTML = '<div class="aviso" style="background:#E7F0E2;border-color:var(--verde);margin:0">'+msg+'.</div>';
+  document.getElementById("cajaCodigos").value = "";
+  pintarVols(); pintarMatriz();
+}
+document.getElementById("btnCargarCodigos").onclick = () =>
+  procesarCodigos(document.getElementById("cajaCodigos").value);
+
+document.getElementById("btnImpRespuestas").onclick = () => document.getElementById("inputRespuestas").click();
+document.getElementById("inputRespuestas").addEventListener("change", e => {
+  const files = [...e.target.files]; if(files.length===0) return;
+  let pendientes = files.length, texto = "";
+  files.forEach(f => {
+    const lector = new FileReader();
+    lector.onload = () => { texto += "\n"+lector.result; if(--pendientes===0) procesarCodigos(texto); };
+    lector.readAsText(f);
+  });
+  e.target.value = "";
+});
+
+/* ================= EXPORTAR / IMPORTAR ================= */
+function descargar(nombre, contenido, tipo){
+  const blob = new Blob([contenido], {type:tipo});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = nombre; a.click();
+  URL.revokeObjectURL(a.href);
+}
+document.getElementById("btnExpJson").onclick = () =>
+  descargar("cuadrillas-zona-norte-respaldo.json", JSON.stringify(estado,null,2), "application/json");
+
+document.getElementById("btnImpJson").onclick = () => document.getElementById("inputJson").click();
+document.getElementById("inputJson").addEventListener("change", e => {
+  const file = e.target.files[0]; if(!file) return;
+  const lector = new FileReader();
+  lector.onload = () => {
+    try{
+      const datos = JSON.parse(lector.result);
+      if(!datos.voluntarios || !datos.ceremonias) throw new Error("Formato no válido");
+      estado = datos;
+      pintarTodo();
+      alert("Respaldo importado: "+estado.voluntarios.length+" voluntarios, "+estado.ceremonias.length+" ceremonias.");
+    }catch(err){ alert("No se pudo leer el archivo: "+err.message); }
+  };
+  lector.readAsText(file);
+  e.target.value = "";
+});
+
+document.getElementById("btnExpCsv").onclick = () => {
+  let csv = "Fecha,Franja,Disciplina,Sede,Detalle,Rol,Voluntario,Telefono\n";
+  const esc = s => '"'+String(s||"").replace(/"/g,'""')+'"';
+  [...estado.ceremonias].sort((a,b)=>a.fecha>b.fecha?1:-1).forEach(c => {
+    const D = DISCIPLINAS[c.disc];
+    const a = estado.asignaciones[c.id] || {roles:{},suplentes:[]};
+    ROLES.forEach((r,i) => {
+      const v = estado.voluntarios.find(x => x.id===a.roles[i]);
+      csv += [c.fecha, c.franja==="am"?"Manana":"Tarde", esc(D.nombre), esc(D.sede), esc(c.detalle), esc(r.n), esc(v?v.nombre:"SIN ASIGNAR"), esc(v?v.tel:"")].join(",")+"\n";
+    });
+    a.suplentes.forEach(id => {
+      const v = estado.voluntarios.find(x => x.id===id);
+      if(v) csv += [c.fecha, c.franja==="am"?"Manana":"Tarde", esc(D.nombre), esc(D.sede), esc(c.detalle), "Suplente", esc(v.nombre), esc(v.tel)].join(",")+"\n";
+    });
+  });
+  descargar("plan-cuadrillas-zona-norte.csv", "\uFEFF"+csv, "text/csv;charset=utf-8");
+};
+
+document.getElementById("btnExpVolsCsv").onclick = () => {
+  let csv = "Nombre,Telefono,Ciudad,Zona preferida,Transporte,Experiencia,Dias disponibles\n";
+  const esc = s => '"'+String(s||"").replace(/"/g,'""')+'"';
+  estado.voluntarios.forEach(v => {
+    csv += [esc(v.nombre), esc(v.tel), v.ciudad, v.zona, v.transporte?"Si":"No", v.exp?"Si":"No", Object.keys(v.dispo).length].join(",")+"\n";
+  });
+  descargar("voluntarios-zona-norte.csv", "\uFEFF"+csv, "text/csv;charset=utf-8");
+};
+
+document.getElementById("btnBorrarTodo").onclick = () => {
+  if(!confirm("Esto borra voluntarios, ceremonias y asignaciones. ¿Seguro? Exporta un respaldo primero si lo necesitas.")) return;
+  estado = { voluntarios:[], ceremonias:[], asignaciones:{} };
+  try{ localStorage.removeItem(CLAVE_LOCAL); }catch(e){}
+  iniciarCeremonias(); pintarTodo();
+};
+
+/* ================= ARRANQUE ================= */
+function pintarTodo(){
+  pintarSelectsCer(); pintarDispoGrid(); pintarVols(); pintarCers(); pintarTira(); pintarCuadrillas(); pintarMatriz(); pintarOficial();
+}
+iniciarCeremonias();
+cargarLocal();
+window.addEventListener("beforeunload", guardarLocal);
+pintarTodo();
+</script>
+</body>
+</html>
